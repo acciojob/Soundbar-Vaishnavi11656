@@ -5,7 +5,7 @@ const tempDom = document.createDocumentFragment();
 const container = document.querySelector(".container");
 
 for(let i = 0; i<sounds.length;i++){
-	createButtons(sounds[i]);
+	createButton(sounds[i]);
 }
 container.appendChild(tempDom)
 
