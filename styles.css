@@ -1,1 +1,25 @@
 /*  your css code here. If applicable */
+ body {
+            height: 100vh;
+            width: 100vw;
+            margin: 0;
+            padding: 0;
+            align-content: center;
+        }
+.container {
+            /* border: 1px solid black; */
+            height: 50%;
+            width: 100%;
+            background-color: #A164DF;
+            display: flex;
+            justify-content: space-evenly;
+            align-items: center;
+        }
+
+.sound-btn {
+            width: 80px;
+            height: 40px;
+            background-color: #663399;
+            color: white;
+            cursor: pointer;
+        }
