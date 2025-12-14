@@ -1,54 +1,47 @@
 //your JS code here. If required.
 
-const sounds = ["applause","boo","gasp","tada","victory","wrong","stop"];
-const tempDom = document.createDocumentFragment();
+const sounds = ["applause", "boo", "gasp", "tada", "victory", "wrong", "stop"];
 const container = document.querySelector(".container");
 
-for(let i = 0; i<sounds.length;i++){
-	createButton(sounds[i]);
-}
-container.appendChild(tempDom)
+// Loop through the array to create Audio tags and Buttons
+sounds.forEach(sound => {
+    // 1. Create the <audio> tag (for everything except the 'stop' button)
+    // This fixes the Cypress error: "Expected to find element: audio"
+    if(sound !== "stop") {
+        const audio = document.createElement("audio");
+        audio.src = `sounds/${sound}.mp3`;
+        audio.id = sound; // We will use this ID to find it later
+        document.body.appendChild(audio);
+    }
 
-function createButton(btnName) {
-	const btn = document.createElement("button")
-	btn.innerText = btnName;
-	btn.id = btnName;
-	// btn.className = "btn"
-	if(btnName == "stop"){
-		btn.className = "stop"
-		btn.addEventListener("click",stopAudio)
-	}else{
-		btn.className = "btn"
-		btn.addEventListener("click",() => playsound(btn))
-	}
+    // 2. Create the Button
+    const btn = document.createElement("button");
+    btn.classList.add("btn");
+    btn.innerText = sound;
 
-	tempDom.appendChild(btn)
-}
+    // 3. Add Event Listeners
+    if (sound === "stop") {
+        btn.classList.add("stop"); // Add specific class for styling
+        btn.addEventListener("click", stopSongs);
+    } else {
+        btn.addEventListener("click", () => {
+            stopSongs(); // Stop others first
+            document.getElementById(sound).play(); // Play the specific audio tag
+        });
+    }
 
-let playlist = {}
+    // 4. Add button to the container
+    container.appendChild(btn);
+});
 
-function playsound(btn){
-	if(btn.id == "stop") return;
-	stopAudio();
-
-	 const audio = new Audio(`sounds/${btn.id}.mp3`)
-
-	playlist[btn.id] = audio
-
-	audio.play()
-
-	console.log(audio,'trying to create audio tag');
-}
-
-function stopAudio(){
-	for(let key in playlist){
-		
-		// console.log(playlist[key])
-		const audio = playlist[key];
-		if(audio){
-			audio.pause();
-			audio.currentTime = 0;
-		}
-		
-	}
+function stopSongs() {
+    sounds.forEach(sound => {
+        // Skip the "stop" string, only look for audio elements
+        if (sound !== "stop") {
+            const song = document.getElementById(sound);
+            // Pause and reset time
+            song.pause();
+            song.currentTime = 0;
+        }
+    });
 }
